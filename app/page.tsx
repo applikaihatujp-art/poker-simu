@@ -96,20 +96,18 @@ export default function PokerApp() {
     <main className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-start pt-2 p-2 md:p-4 overflow-x-hidden">
       <h1 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 tracking-wider">TEXAS HOLD'EM SIMULATOR</h1>
 
-      {/* 紺色のポーカーテーブル (スマホ横向き対応: 高さと左右の押し出し幅をレスポンシブに) */}
-      <div className="relative w-full max-w-5xl h-[450px] md:h-[680px] bg-blue-950 border-[8px] md:border-[12px] border-amber-800 rounded-[120px] md:rounded-[200px] shadow-2xl flex flex-col justify-between p-4 md:p-8">
+      {/* 変更後：scale-[0.65] xs:scale-[0.75] sm:scale-90 md:scale-100 と origin-top を追加して全体を縮小表示 */}
+      <div className="relative w-full max-w-5xl min-h-[400px] md:h-[680px] bg-blue-950 border-[8px] md:border-[12px] border-amber-800 rounded-[120px] md:rounded-[200px] shadow-2xl flex flex-col justify-between p-4 md:p-8 scale-[0.65] xs:scale-[0.75] sm:scale-90 md:scale-100 origin-top mt-2 md:mt-0">
         {/* 上部プレイヤー (プレイヤー5, 6) */}
         <div className="flex justify-between px-10 md:px-[180px] z-10">
-          <div className="translate-x-6 md:translate-x-12 scale-90 md:scale-100">{hasStarted && <PlayerSeat player={players[4]} isWinner={winnerIds.includes(players[4].id)} />}</div>
-          <div className="-translate-x-6 md:-translate-x-12 scale-90 md:scale-100">{hasStarted && <PlayerSeat player={players[5]} isWinner={winnerIds.includes(players[5].id)} />}</div>
+          <div className="translate-x-6 md:translate-x-12">{hasStarted && <PlayerSeat player={players[4]} isWinner={winnerIds.includes(players[4].id)} />}</div>
+          <div className="-translate-x-6 md:-translate-x-12">{hasStarted && <PlayerSeat player={players[5]} isWinner={winnerIds.includes(players[5].id)} />}</div>
         </div>
 
         {/* 中間エリア (左2人、中央場札、右2人) */}
         <div className="flex w-full items-center justify-between z-10 px-1 md:px-4">
-          {/* 左側プレイヤー (プレイヤー3, 4) */}
-          <div className="flex flex-col gap-2 md:gap-5 scale-90 md:scale-100">{hasStarted && [2, 3].map((idx) => <PlayerSeat key={players[idx].id} player={players[idx]} isWinner={winnerIds.includes(players[idx].id)} />)}</div>
+          <div className="flex flex-col gap-2 md:gap-5">{hasStarted && [2, 3].map((idx) => <PlayerSeat key={players[idx].id} player={players[idx]} isWinner={winnerIds.includes(players[idx].id)} />)}</div>
 
-          {/* 中央：場札 ＆ シャッフルボタン */}
           <div className="flex flex-col items-center bg-blue-900/60 p-3 md:p-6 rounded-xl md:rounded-2xl border border-blue-700/50 shadow-inner">
             <h2 className="text-xs md:text-sm font-semibold mb-2 md:mb-3 text-blue-200 tracking-wide">コミュニティカード (場札 5枚)</h2>
             <div className="flex gap-1.5 md:gap-2.5 mb-3 md:mb-6">
@@ -127,14 +125,13 @@ export default function PokerApp() {
             </button>
           </div>
 
-          {/* 右側プレイヤー (プレイヤー7, 8) */}
-          <div className="flex flex-col gap-2 md:gap-5 scale-90 md:scale-100">{hasStarted && [6, 7].map((idx) => <PlayerSeat key={players[idx].id} player={players[idx]} isWinner={winnerIds.includes(players[idx].id)} />)}</div>
+          <div className="flex flex-col gap-2 md:gap-5">{hasStarted && [6, 7].map((idx) => <PlayerSeat key={players[idx].id} player={players[idx]} isWinner={winnerIds.includes(players[idx].id)} />)}</div>
         </div>
 
         {/* 下部プレイヤー (あなた、プレイヤー2) */}
         <div className="flex justify-between px-10 md:px-[180px] z-10">
-          <div className="flex items-center translate-x-6 md:translate-x-12 scale-90 md:scale-100">{hasStarted && <PlayerSeat player={getPlayer(0)} isSelf={true} isWinner={winnerIds.includes(getPlayer(0).id)} />}</div>
-          <div className="flex items-center -translate-x-6 md:-translate-x-12 scale-90 md:scale-100">{hasStarted && <PlayerSeat player={getPlayer(1)} isWinner={winnerIds.includes(getPlayer(1).id)} />}</div>
+          <div className="flex items-center translate-x-6 md:translate-x-12">{hasStarted && <PlayerSeat player={getPlayer(0)} isSelf={true} isWinner={winnerIds.includes(getPlayer(0).id)} />}</div>
+          <div className="flex items-center -translate-x-6 md:-translate-x-12">{hasStarted && <PlayerSeat player={getPlayer(1)} isWinner={winnerIds.includes(getPlayer(1).id)} />}</div>
         </div>
       </div>
     </main>
@@ -160,8 +157,6 @@ function PlayerSeat({ player, isSelf = false, isWinner = false }: { player: Play
 
 function CardView({ card, small = false }: { card: Card; small?: boolean }) {
   const suitObj = SUITS.find((s) => s.suit === card.suit);
-
-  // スマホ横向きの時はカードも少しコンパクト（w-12 h-20など）にし、PCサイズ（md:）で元のサイズに戻す
   const sizeClass = small ? "w-11 h-16 md:w-14 md:h-20" : "w-12 h-20 md:w-[76px] md:h-32";
   const suitSize = small ? "text-[1.8rem] md:text-[2.6rem]" : "text-[2rem] md:text-[3.8rem]";
   const valueSize = small ? "text-[1.3rem] md:text-[2rem]" : "text-[1.5rem] md:text-[2.8rem]";
