@@ -96,7 +96,7 @@ export default function PokerApp() {
     // justify-start と pt-4 に変更して画面全体を上に持ち上げ
 
     <main className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-start pt-2 p-4">
-      <h1 className="text-2xl font-bold mb-4 tracking-wider">TEXAS HOLD'EM POKER</h1>
+      <h1 className="text-2xl font-bold mb-4 tracking-wider">TEXAS HOLD'EM SIMULATOR</h1>
 
       {/* 紺色のポーカーテーブル */}
       <div className="relative w-full max-w-5xl h-[680px] bg-blue-950 border-[12px] border-amber-800 rounded-[200px] shadow-2xl flex flex-col justify-between p-8">
